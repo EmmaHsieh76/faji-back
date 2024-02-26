@@ -19,6 +19,8 @@ router.patch('/cart', auth.jwt, editCart)
 // 拿取購物車資料
 router.get('/cart', auth.jwt, getCart)
 
+router.patch('/user/:id', edit) // 用戶用編輯自己的資料
+
 // =========== 管理者用 ===========
 router.get('/all', auth.jwt, admin, getAll) // 管理者用
 router.patch('/:id', auth.jwt, admin, upload, edit) // 管理者用編輯全部

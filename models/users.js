@@ -79,12 +79,12 @@ const schema = new Schema(
         message: '使用者電話格式錯誤'
       }
     },
-    // 黑名單 ?
+    // 黑名單
     blacklist: {
       type: Boolean,
       default: false
     },
-    // 黑名單原因 ?
+    // 黑名單原因
     blacklistReason: {
       type: String,
       default: ''

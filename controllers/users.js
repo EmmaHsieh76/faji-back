@@ -47,6 +47,7 @@ export const create = async (req, res) => {
 // 登入
 export const login = async (req, res) => {
   try {
+    console.log(req.user._id)
     // 給一組token
     // jwt的token => jwt.sign(要保存的id,密鑰,過期)
     const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '14 days' })
@@ -140,6 +141,7 @@ export const getProfile = async (req, res) => {
       success: true,
       message: '',
       result: {
+        _id: req.user._id,
         account: req.user.account,
         role: req.user.role,
         // cartQuantity 來自 models=>users.js 虛擬欄位，用來將購物車內商品的數量加總
@@ -299,6 +301,7 @@ export const getAll = async (req, res) => {
 // ===== 編輯使用者
 export const edit = async (req, res) => {
   try {
+    console.log(req.params.id)
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')
 
     // 1. 先把圖片路徑放進 req.body.image
@@ -313,6 +316,7 @@ export const edit = async (req, res) => {
       message: ''
     })
   } catch (error) {
+    console.log(error)
     if (error.name === 'CastError' || error.message === 'ID') {
       res.status(StatusCodes.BAD_REQUEST).json({
         success: false,

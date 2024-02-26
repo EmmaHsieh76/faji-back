@@ -186,6 +186,7 @@ export const getId = async (req, res) => {
   }
 }
 
+// 修改商品
 export const edit = async (req, res) => {
   try {
     // 檢查id格式有無錯誤
@@ -227,6 +228,7 @@ export const edit = async (req, res) => {
   }
 }
 
+// 刪除商品
 export const remove = async (req, res) => {
   try {
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')

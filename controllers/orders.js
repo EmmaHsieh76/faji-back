@@ -13,7 +13,11 @@ export const create = async (req, res) => {
     // 有false就丟出錯誤
     if (!ok) throw new Error('SELL')
     // 建立訂單
-    await orders.create({ ...req.body, user: req.user._id })
+    await orders.create({
+      user: req.user._id,
+      cart: req.user.cart,
+      ...req.body
+    })
     // 清空購物車
     req.user.cart = []
     await req.user.save()
@@ -51,12 +55,14 @@ export const create = async (req, res) => {
 export const get = async (req, res) => {
   try {
     const result = await orders.find({ user: req.user._id }).populate('cart.product')
+    console.log(result[0].cart)
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
       result
     })
   } catch (error) {
+    console.log(error, '123')
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: '未知錯誤'
