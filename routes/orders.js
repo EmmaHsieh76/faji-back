@@ -6,7 +6,7 @@ import { create, get, getAll } from '../controllers/orders.js'
 const router = Router()
 
 router.post('/', auth.jwt, create)
-router.get('/', auth.jwt, get)
+router.get('/', get)
 router.get('/all', auth.jwt, admin, getAll)
 
 export default router
