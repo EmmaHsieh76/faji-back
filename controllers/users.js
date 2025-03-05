@@ -28,6 +28,7 @@ export const create = async (req, res) => {
       })
       //  MongoDB 伺服器出現錯誤或資料重複
     } else if (error.name === 'MongoServerError' && error.code === 11000) {
+      console.log(error)
       res.status(StatusCodes.CONFLICT).json({
         // HTTP 狀態碼 409（CONFLICT）和訊息「帳號已註冊」。
         success: false,
