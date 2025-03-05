@@ -34,10 +34,16 @@ const upload = multer({
 })
 
 // 處理檔案大小錯誤及格式錯誤
+// 處理單張或多張圖片
 export default (req, res, next) => {
   // 單張圖片用single('image')
   // 多張圖片用陣列array('image',3)
-  upload.array('images', 3)(req, res, error => {
+    // 根據請求中的 files 來決定上傳模式
+    const uploadHandler = req.files && req.files.length > 1
+    ? upload.array('images', 3)  // 多張圖片
+      : upload.single('image')     // 單張圖片
+        
+    uploadHandler(req, res, error => {
     if (error instanceof multer.MulterError) {
       // 預設訊息是上傳錯誤
       let message = '上傳錯誤'
