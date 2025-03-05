@@ -61,6 +61,7 @@ export const jwt = (req, res, next) => {
         })
       } else if (info.message === '未知錯誤') {
         // INTERNAL_SERVER_ERROR => 500
+        console.log('middle驗證錯誤',error.message)
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
           success: false,
           message: '未知錯誤'

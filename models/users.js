@@ -79,6 +79,16 @@ const schema = new Schema(
         message: '使用者電話格式錯誤'
       }
     },
+    avatar: {
+      type: String,
+      // 預設值 default
+      // default: 'aaaaaaa',
+      // default 可以寫成 function，要用 this 所以不能用箭頭函式
+      default () {
+        // this.email 指的是同一筆資料 email 欄位的值
+        return `https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=${this.account}`
+      }
+    },
     // 黑名單
     blacklist: {
       type: Boolean,
