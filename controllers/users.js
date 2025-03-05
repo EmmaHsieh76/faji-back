@@ -64,12 +64,12 @@ export const login = async (req, res) => {
       result: {
         token,
         _id: req.user._id,
-        account: req.user.account,
         role: req.user.role,
         // cartQuantity 來自 models=>users.js 虛擬欄位用來將購物車內商品的數量加總
         cart: req.user.cartQuantity,
         name: req.user.name,
         phone: req.user.phone,
+        avatar: req.user.avatar,
         blacklist: req.user.blacklist,
         blacklistReason: req.user.blacklistReason
       }
@@ -149,6 +149,7 @@ export const getProfile = async (req, res) => {
         cart: req.user.cartQuantity,
         name: req.user.name,
         phone: req.user.phone,
+        avatar: req.user.avatar,
         blacklist: req.user.blacklist,
         blacklistReason: req.user.blacklistReason
       }
