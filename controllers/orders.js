@@ -62,7 +62,7 @@ export const get = async (req, res) => {
       result
     })
   } catch (error) {
-    console.log(error, '123')
+    console.log('哪兒錯誤',error)
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: '未知錯誤'
