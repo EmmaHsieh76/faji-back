@@ -55,7 +55,6 @@ export const create = async (req, res) => {
 export const get = async (req, res) => {
   try {
     const result = await orders.find({ user: req.user._id }).populate('cart.product')
-    console.log(result[0].cart)
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
