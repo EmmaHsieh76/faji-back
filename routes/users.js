@@ -19,7 +19,12 @@ router.patch('/cart', auth.jwt, editCart)
 // 拿取購物車資料
 router.get('/cart', auth.jwt, getCart)
 
-router.patch('/user/:id', edit) // 用戶用編輯自己的資料
+// 用戶用編輯自己的資料
+router.patch('/user/:id', edit)
+// --- 使用者編輯自己資料
+router.patch('/self', auth.jwt, editSelf)
+// --- 換大頭貼
+router.patch('/avatar', auth.jwt, upload, avatar)
 
 // =========== 管理者用 ===========
 router.get('/all', auth.jwt, admin, getAll) // 管理者用
