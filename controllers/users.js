@@ -400,7 +400,7 @@ export const avatar = async (req, res) => {
     }
     */
     // 把大題貼改成這次檔案上傳的路徑
-    req.user.avatar = req.file.path // 多檔上傳 req.files
+    req.user.avatar = req.files.path // 多檔上傳 req.files
     // 保存
     await req.user.save()
     // 回覆成功
