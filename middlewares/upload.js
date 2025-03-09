@@ -43,11 +43,11 @@ export default (req, res, next) => {
     ? upload.array('images', 3)  // 多張圖片
     : upload.single('image')     // 單張圖片
   
-    console.log('req.file:單張圖片:', req.file);
-    console.log('req.files:多張圖片:', req.files);
-        
     uploadHandler(req, res, error => {
-    if (error instanceof multer.MulterError) {
+      console.log('req.file:單張圖片:', req.file);
+      console.log('req.files:多張圖片:', req.files);
+          
+      if (error instanceof multer.MulterError) {
       // 預設訊息是上傳錯誤
       let message = '上傳錯誤'
       if (error.code === 'LIMIT_FILE_SIZE') {
