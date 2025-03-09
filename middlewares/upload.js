@@ -41,7 +41,10 @@ export default (req, res, next) => {
     // 根據請求中的 files 來決定上傳模式
     const uploadHandler = req.files && req.files.length > 1
     ? upload.array('images', 3)  // 多張圖片
-      : upload.single('image')     // 單張圖片
+    : upload.single('image')     // 單張圖片
+  
+    console.log('req.file:單張圖片:', req.file);
+    console.log('req.files:多張圖片:', req.files);
         
     uploadHandler(req, res, error => {
     if (error instanceof multer.MulterError) {
