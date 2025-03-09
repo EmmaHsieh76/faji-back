@@ -36,6 +36,7 @@ const upload = multer({
 // 處理檔案大小錯誤及格式錯誤
 // 處理單張或多張圖片
 export default (req, res, next) => {
+   console.log('🚀 req.body:', req.body); // 檢查請求的 body
   // 單張圖片用single('image')
   // 多張圖片用陣列array('image',3)
     // 根據請求中的 files 來決定上傳模式
