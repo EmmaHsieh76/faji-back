@@ -1,4 +1,4 @@
-// 處理風(? data的資料型態
+// 處理form data的資料型態
 import multer from 'multer'
 // 雲端平台套件
 import { v2 as cloudinary } from 'cloudinary'
@@ -40,14 +40,22 @@ export default (req, res, next) => {
   // 單張圖片用single('image')
   // 多張圖片用陣列array('image',3)
     // 根據請求中的 files 來決定上傳模式
-    const uploadHandler = req.files && req.files.length > 1
-    ? upload.array('images', 3)  // 多張圖片
-    : upload.single('image')     // 單張圖片
+    // const uploadHandler = req.files && req.files.length > 1
+    // ? upload.array('images', 3)  // 多張圖片
+    // : upload.single('image')     // 單張圖片
+  // uploadHandler
   
-    uploadHandler(req, res, error => {
+    upload.any()(req, res, error => {
       console.log('req.file:單張圖片:', req.file);
       console.log('req.files:多張圖片:', req.files);
-          
+      
+      if (!req.files || req.files.length === 0) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+          success: false,
+          message: '沒有上傳任何檔案'
+        })
+       }
+      
       if (error instanceof multer.MulterError) {
       // 預設訊息是上傳錯誤
       let message = '上傳錯誤'
