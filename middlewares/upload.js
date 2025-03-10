@@ -45,21 +45,15 @@ export default (req, res, next) => {
     // : upload.single('image')     // 單張圖片
   // uploadHandler
   
-    upload.any()(req, res, error => {
-      console.log('req.file:單張圖片:', req.file);
-      console.log('req.files:多張圖片:', req.files);
+  upload.any()(req, res, error => {
+      
+      console.log('多張圖片req.files:', req.files);
       res.status(StatusCodes.OK).json({
         success: true,
         message: '上傳成功',
         result: req.files[0].path  // 確保回傳 Cloudinary 的圖片 URL
       })
       
-      if (!req.files || req.files.length === 0) {
-        return res.status(StatusCodes.BAD_REQUEST).json({
-          success: false,
-          message: '沒有上傳任何檔案'
-        })
-       }
       
       if (error instanceof multer.MulterError) {
       // 預設訊息是上傳錯誤
