@@ -30,4 +30,5 @@ router.patch('/avatar', auth.jwt, upload, avatar)
 router.get('/all', auth.jwt, admin, getAll) // 管理者用
 router.patch('/:id', auth.jwt, admin, upload, edit) // 管理者用編輯全部
 router.delete('/:id', auth.jwt, admin, remove)
+
 export default router
