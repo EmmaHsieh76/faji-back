@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { create, login, logout, extend, getProfile, editCart, getCart, edit, getAll, remove, editSelf, avatar } from '../controllers/users.js'
 import * as auth from '../middlewares/auth.js'
-import upload from '../middlewares/upload.js'
+import * as upload from '../middlewares/upload.js'
 import admin from '../middlewares/admin.js'
 
 const router = Router()
@@ -24,11 +24,11 @@ router.patch('/user/:id', edit)
 // --- 使用者編輯自己資料
 router.patch('/self', auth.jwt, editSelf)
 // --- 換大頭貼
-router.patch('/avatar', auth.jwt, upload, avatar)
+router.patch('/avatar', auth.jwt, upload.avatar, avatar)
 
 // =========== 管理者用 ===========
 router.get('/all', auth.jwt, admin, getAll) // 管理者用
-router.patch('/:id', auth.jwt, admin, upload, edit) // 管理者用編輯全部
+router.patch('/:id', auth.jwt, admin, upload.avatar, edit) // 管理者用編輯全部
 router.delete('/:id', auth.jwt, admin, remove)
 
 export default router

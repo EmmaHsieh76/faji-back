@@ -34,9 +34,9 @@ const upload = multer({
 })
 
 // 處理檔案大小錯誤及格式錯誤
-// 處理單張或多張圖片
-export default (req, res, next) => {
-   console.log('🚀 req.body:', req.body); // 檢查請求的 body
+// 處理單張圖片
+export const avatar = (req, res, next) => {
+  //  console.log('🚀 req.body:', req.body); // 檢查請求的 body
   // 單張圖片用single('image')
   // 多張圖片用陣列array('image',3)
     // 根據請求中的 files 來決定上傳模式
@@ -45,13 +45,55 @@ export default (req, res, next) => {
     // : upload.single('image')     // 單張圖片
   // uploadHandler
   
-  upload.any()(req, res, error => {
+  upload.single('image')(req, res, error => {
       
-      console.log('多張圖片req.files:', req.files);
       res.status(StatusCodes.OK).json({
         success: true,
-        message: '上傳成功',
-        result: req.files[0].path  // 確保回傳 Cloudinary 的圖片 URL
+        message: '上傳成功'
+      })
+      
+      
+      if (error instanceof multer.MulterError) {
+      // 預設訊息是上傳錯誤
+      let message = '上傳錯誤'
+      if (error.code === 'LIMIT_FILE_SIZE') {
+        message = '檔案太大'
+      } else if (error.code === 'LIMIT_FILE_FORMAT') {
+        message = '檔案格式錯誤'
+      }
+      res.status(StatusCodes.BAD_REQUEST).json({
+        success: false,
+        message
+      })
+    } else if (error) {
+      console.log(error)
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: '未知錯誤'
+      })
+    } else {
+      next()
+    }
+  })
+}
+
+// 處理檔案大小錯誤及格式錯誤
+// 處理多張圖片
+export const product = (req, res, next) => {
+  //  console.log('🚀 req.body:', req.body); // 檢查請求的 body
+  // 單張圖片用single('image')
+  // 多張圖片用陣列array('image',3)
+    // 根據請求中的 files 來決定上傳模式
+    // const uploadHandler = req.files && req.files.length > 1
+    // ? upload.array('images', 3)  // 多張圖片
+    // : upload.single('image')     // 單張圖片
+  // uploadHandler
+  
+  upload.array('images', 3)(req, res, error => {
+      
+      res.status(StatusCodes.OK).json({
+        success: true,
+        message: '上傳成功'
       })
       
       
