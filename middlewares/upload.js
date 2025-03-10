@@ -51,7 +51,7 @@ export default (req, res, next) => {
       res.status(StatusCodes.OK).json({
         success: true,
         message: '上傳成功',
-        avatar: req.files[0].path  // 確保回傳 Cloudinary 的圖片 URL
+        result: req.files[0].path  // 確保回傳 Cloudinary 的圖片 URL
       })
       
       if (!req.files || req.files.length === 0) {

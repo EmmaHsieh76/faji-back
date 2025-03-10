@@ -407,7 +407,7 @@ export const avatar = async (req, res) => {
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
-      result: req.user.avatar
+      result: req.user
     })
   } catch (error) {
     console.log(error)
