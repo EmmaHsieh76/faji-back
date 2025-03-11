@@ -10,25 +10,26 @@ export const create = async (req, res) => {
     req.body.images = req.files.map(file => file.path)
 
     const result = await products.create(req.body)
-    res.status(StatusCodes.OK).json({
+    return res.status(StatusCodes.OK).json({
       success: true,
       message: '',
       result
     })
   } catch (error) {
+    console.log('controller的product',error)
     // 驗證錯誤
     if (error.name === 'ValidationError') {
       const key = Object.keys(error.errors)[0]
       // ?
       const message = error.errors[key].message
-      res.status(StatusCodes.BAD_REQUEST).json({
+      return res.status(StatusCodes.BAD_REQUEST).json({
         // BAD_REQUEST => 400
         success: false,
         message
       })
       //  MongoDB 伺服器出現錯誤或資料重複
     } else {
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         // INTERNAL_SERVER_ERROR => 500
         success: false,
         message: '未知錯誤'
