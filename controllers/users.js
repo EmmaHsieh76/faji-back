@@ -155,6 +155,7 @@ export const getProfile = async (req, res) => {
       }
     })
   } catch (error) {
+    console.log(error)
     // INTERNAL_SERVER_ERROR => http狀態碼500
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
