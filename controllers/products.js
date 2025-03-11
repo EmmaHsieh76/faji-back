@@ -10,11 +10,21 @@ export const create = async (req, res) => {
     req.body.images = req.files.map(file => file.path)
 
     const result = await products.create(req.body)
+    if (!res.headersSent) { // 確保只有在 headers 沒有發送時才回應
+      return res.status(StatusCodes.OK).json({
+        success: true,
+        message: '',
+        result
+      })
+    }
+    
     return res.status(StatusCodes.OK).json({
       success: true,
       message: '',
       result
     })
+
+    
   } catch (error) {
     console.log('controller的product',error)
     // 驗證錯誤
