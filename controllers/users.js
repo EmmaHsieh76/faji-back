@@ -400,13 +400,18 @@ export const avatar = async (req, res) => {
       filename: 'wfsjhnj7mhucazq9rcpj'
     }
     */
+    console.log('🚀 avatar function started');
+
+
     if (!req.file) {
+      console.log('❌ 沒有找到 file');
       return res.status(StatusCodes.BAD_REQUEST).json({
         success: false,
         message: '沒有上傳檔案'
       });
     }
     if (!req.user) {
+      console.log('❌ 沒有找到 user');
       return res.status(StatusCodes.UNAUTHORIZED).json({
         success: false,
         message: '未授權的請求'
@@ -416,6 +421,7 @@ export const avatar = async (req, res) => {
     req.user.avatar = req.file.path // 多檔上傳 req.files
     // 保存
     await req.user.save()
+    console.log('✅ user.save() 成功');
     // 回覆成功
     return res.status(StatusCodes.OK).json({
       success: true,
@@ -423,11 +429,15 @@ export const avatar = async (req, res) => {
       result: req.user
     })
   } catch (error) {
-    console.log(error)
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      success: false,
-      message: '伺服器錯誤'
-    })
+    console.log('🔥 發生錯誤:', error);
+    if (!res.headersSent) {
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: '伺服器錯誤'
+      });
+    } else {
+      console.log('⚠️ 嘗試發送錯誤回應時，headers 已經送出');
+    }
   }
 }
 
