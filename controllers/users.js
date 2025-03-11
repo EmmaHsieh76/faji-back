@@ -400,19 +400,31 @@ export const avatar = async (req, res) => {
       filename: 'wfsjhnj7mhucazq9rcpj'
     }
     */
+    if (!req.file) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        success: false,
+        message: '沒有上傳檔案'
+      });
+    }
+    if (!req.user) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        success: false,
+        message: '未授權的請求'
+      });
+    }
     // 把大題貼改成這次檔案上傳的路徑
     req.user.avatar = req.file.path // 多檔上傳 req.files
     // 保存
     await req.user.save()
     // 回覆成功
-    res.status(StatusCodes.OK).json({
+    return res.status(StatusCodes.OK).json({
       success: true,
-      message: '',
+      message: '頭像更新成功',
       result: req.user
     })
   } catch (error) {
     console.log(error)
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: '伺服器錯誤'
     })
