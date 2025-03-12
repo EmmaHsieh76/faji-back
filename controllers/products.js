@@ -27,6 +27,7 @@ export const create = async (req, res) => {
     
   } catch (error) {
     console.log('controller的product',error)
+    console.log('controller的product',error.message)
     // 驗證錯誤
     if (error.name === 'ValidationError') {
       const key = Object.keys(error.errors)[0]
