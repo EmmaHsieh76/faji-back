@@ -26,31 +26,26 @@ app.use(
     // origin: 請求的來源如果來源。postman=>會產生undifined
     // callback(錯誤, 是否允許請求): 是否允許請求為true，錯誤為null
     // 原始寫法
-    // origin (origin, callback) {
-    //   // 如果是undefined(可能是postman或是後端請求)或是github或是localhost，就允許請求
-    //   if (origin === undefined || origin.includes('github.io') || origin.includes('localhost')) {
-    //     callback(null, true)
-    //   } else {
-    //     // 網域不允許就發出CORS的錯誤
-    //     callback(new Error('CORS'), false)
-    //   }
-    // },
-    origin: '*',
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+    origin (origin, callback) {
+      // 如果是undefined(可能是postman或是後端請求)或是github或是localhost，就允許請求
+      if (origin === undefined || origin.includes('github.io') || origin.includes('localhost')) {
+        callback(null, true)
+      } else {
+        // 網域不允許就發出CORS的錯誤
+        callback(new Error('CORS'), false)
+      }
+    }
   })
 )
 // 401 => 未授權，我不知道你是誰
 // 403 => FORBIDDEN 禁止，我知道你是誰，但你沒有權限
-// app.use((_, req, res, next) => {
-//   res.status(StatusCodes.FORBIDDEN).json({
-//     success: false,
-//     message: '請求被拒絕'
-//   })
-// })
-// 允許 OPTIONS 預檢請求
-// app.options('*', cors())
+app.use((_, req, res, next) => {
+  res.status(StatusCodes.FORBIDDEN).json({
+    success: false,
+    message: '請求被拒絕'
+  })
+})
+
 
 app.use(express.json())
 app.use((_, req, res, next) => {
