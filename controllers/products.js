@@ -17,7 +17,7 @@ export const create = async (req, res) => {
         result
       })
     }
-    
+
     return res.status(StatusCodes.OK).json({
       success: true,
       message: '',
@@ -105,7 +105,7 @@ export const getAll = async (req, res) => {
       }
     })
   } catch (error) {
-    console.log(error)
+    console.log('GETall錯誤',error)
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: '未知錯誤'
