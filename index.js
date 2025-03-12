@@ -35,17 +35,20 @@ app.use(
         callback(new Error('CORS'), false)
       }
     }
+    // origin: '*',
+    // methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    // allowedHeaders: ['Content-Type', 'Authorization'],
+    // credentials: true
   })
 )
 // 401 => 未授權，我不知道你是誰
 // 403 => FORBIDDEN 禁止，我知道你是誰，但你沒有權限
-app.use((_, req, res, next) => {
-  res.status(StatusCodes.FORBIDDEN).json({
-    success: false,
-    message: '請求被拒絕'
-  })
-})
-
+// app.use((_, req, res, next) => {
+//   res.status(StatusCodes.FORBIDDEN).json({
+//     success: false,
+//     message: '請求被拒絕'
+//   })
+// })
 
 app.use(express.json())
 app.use((_, req, res, next) => {
