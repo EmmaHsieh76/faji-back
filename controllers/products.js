@@ -10,6 +10,7 @@ export const create = async (req, res) => {
     req.body.images = req.files.map(file => file.path)
 
     const result = await products.create(req.body)
+    console.log('create', res)
     if (!res.headersSent) { // 確保只有在 headers 沒有發送時才回應
       return res.status(StatusCodes.OK).json({
         success: true,
@@ -18,16 +19,12 @@ export const create = async (req, res) => {
       })
     }
 
-    return res.status(StatusCodes.OK).json({
-      success: true,
-      message: '',
-      result
-    })
-
-    
+    // return res.status(StatusCodes.OK).json({
+    //   success: true,
+    //   message: '',
+    //   result
+    // })
   } catch (error) {
-    console.log('controller的product',error)
-    console.log('controller的product',error.message)
     // 驗證錯誤
     if (error.name === 'ValidationError') {
       const key = Object.keys(error.errors)[0]
@@ -106,7 +103,7 @@ export const getAll = async (req, res) => {
       }
     })
   } catch (error) {
-    console.log('GETall錯誤',error)
+    console.log('GETall錯誤', error)
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: '未知錯誤'
