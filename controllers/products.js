@@ -7,11 +7,12 @@ export const create = async (req, res) => {
     // 單張圖寫法
     // req.body.image = req.file.path
     // 多張圖寫法
-    req.body.images = req.files.map(file => file.path)
+    req.body.images = req.files.map((file) => file.path)
 
     const result = await products.create(req.body)
     console.log('create', res)
-    if (!res.headersSent) { // 確保只有在 headers 沒有發送時才回應
+    if (!res.headersSent) {
+      // 確保只有在 headers 沒有發送時才回應
       return res.status(StatusCodes.OK).json({
         success: true,
         message: '',
@@ -77,7 +78,7 @@ export const getAll = async (req, res) => {
       // 查詢
       .find({
         $or: [
-        // 名字或說明要符合正則表達式
+          // 名字或說明要符合正則表達式
           { name: regex },
           { description: regex }
         ]
@@ -124,10 +125,7 @@ export const get = async (req, res) => {
       .find({
         // 只取有上架的商品
         sell: true,
-        $or: [
-          { name: regex },
-          { description: regex }
-        ]
+        $or: [{ name: regex }, { description: regex }]
       })
       // const text = 'a'
       // const obj = { [text]: 1 }
@@ -146,7 +144,8 @@ export const get = async (req, res) => {
       success: true,
       message: '',
       result: {
-        data, total
+        data,
+        total
       }
     })
   } catch (error) {
@@ -198,12 +197,25 @@ export const getId = async (req, res) => {
 // 修改商品
 export const edit = async (req, res) => {
   try {
-    // 檢查id格式有無錯誤
+    // 1. 檢查 id 格式有無錯誤
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')
 
-    // 因為前端有可能沒有傳圖片，所以無圖片時.?才不會出現undefined
-    req.body.images = req.files?.map(file => file.path)
-    // 去商品的model以id查東西，req.params.id=>要查的東西，req.body=>要更新的內容，runValidators=>要不要在更新時執行驗證，.orFail()=> id不存在會產生錯誤訊息
+    // 2. 處理布林值轉型問題（防止前端 FormData 傳入字串 "false" 導致下架失敗）
+    if (req.body.sell !== undefined) {
+      req.body.sell = req.body.sell === 'true' || req.body.sell === true
+    }
+
+    // 3. 【關鍵修正】處理圖片覆蓋問題
+    if (req.files && req.files.length > 0) {
+      // 只有在前端真的有傳新圖片檔案時，才去更新 images 欄位
+      req.body.images = req.files.map((file) => file.path)
+    } else {
+      // 如果前端沒有傳新檔案，務必將 images 欄位從 req.body 中刪除！
+      // 這樣 findByIdAndUpdate 才不會用空資料去覆蓋資料庫裡原本的舊圖片路徑
+      delete req.body.images
+    }
+
+    // 4. 更新資料庫
     await products.findByIdAndUpdate(req.params.id, req.body, { runValidators: true }).orFail(new Error('NOT FOUND'))
 
     res.status(StatusCodes.OK).json({
